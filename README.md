@@ -1,5 +1,6 @@
-# xsettlers
-Initial framework for XSettlers
+# XSettlers Object web service
 
-This time the idea is to implement using an application network the way MuleSoft defines it. 
-Most of this looks like a Mule project, but stuffed into one server configuration.
+This module implements an object web service API to be used with XSettlers,
+the galactic expansion game. It is a System level API and implemented
+rather simply
+
