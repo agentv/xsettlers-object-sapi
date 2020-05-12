@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<flow name="postObject" doc:id="07012b87-45bc-428f-9e63-5e95cbaf14d0" >
+		<logger level="INFO" message='#["Object created..."]' />
+	</flow>
+	<flow name="keyStatus" doc:id="78ba79f9-1777-4bac-8c04-19875d86e8b6" >
+		<http:listener doc:name="GET /key/status" doc:id="785d5a95-7b30-4f0d-b9e2-2484eb243fb9" config-ref="HTTP_Listener_config" path="/key/status" allowedMethods="GET" >
+			<http:response reasonPhrase="Valid Key" >
+				<http:body ><![CDATA[Valid Key]]></http:body>
+			</http:response>
+			<http:error-response statusCode="400" reasonPhrase="Invalid Key" >
+				<http:body ><![CDATA[Invalid Key]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<validation:matches-regex doc:id="9b26b83a-1a28-470c-a8c7-a913e3e3022b" value="#[payload]" regex="#[/^[A-Za-z0-9:\-\.]*$/]" message="bad input!" doc:name="Safe Key Content" />
+	</flow>
+</mule>

@@ -1,0 +1,113 @@
+#%RAML 1.0
+title: XSettlers Object SAPI
+version: 0.5.0
+description: This API implements the lowest level functions of the game engine.
+
+/object:
+  displayName: Game Object
+  description: general class for game objects
+  get:
+    displayName: Get Object
+    description: retrieve object(s) from store
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              - key1 : value1
+              - key2 : value2
+  post:
+    displayName: Create New Object
+    description: add new object to store
+    body:
+      application/json:
+        description: TODO - establish a data type for this, and example
+        example:
+          - objecttypename : object_type_name
+          - objectattributes : object_attributes
+          - objectdata : object_data
+
+  /{ID}:
+    displayName: Object by ID
+    description: a game object identified by key
+    get:
+      description: retrieve identified object from store
+      displayName: Retrieve Object by ID
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                key : value
+    put:
+      description: overwrite (or create) identified object in store
+      displayName: Overwrite Object by ID
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                key: value
+    delete:
+        description: remove identified object from store
+        displayName: Remove Object by ID
+        responses:
+          200:
+            body:
+              application/json:
+                example:
+                  deleted_object_key : deleted_object_disposition
+
+  /cohort:
+    displayName: Set of Objects
+    description: a set of objects - defined by a _selectionspec_
+    get:
+      description: retrieve objects from the store according to a key specification
+      queryParameters:
+        selectionspec:
+          description: an object that defines the selection characteristics of the set # current thoughts: type, date-range, owner, from-list, owned-by-object
+          required: true
+
+/key:
+  displayName: Object Key
+  description: a properly formed key associated with an object
+  get:
+    displayName: Make New Key
+    description: generate a new key
+    queryParameters:
+      key-type:
+        description: one valid member of the consumer's assigned _objectset_
+        required: true
+        type: string
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              validKey : newKey
+  /objectset:
+    displayName: objectset
+    description: a collection of text strings that describe the object types to be stored and retrieved
+    get:
+      displayName: Get Current objectset
+      description: retrieve the _objectset_ currently registered, or error if none is registered
+    post:
+      displayName: Register an objectset
+      description: register the use of an _objectset_ associated with a given consumer - return an "object set ID" (_osid_)
+      body:
+        application/json:
+          type: string[]
+          example:
+            - sector
+            - ship
+            - colony
+            - player
+            - pod 
+      responses:
+        201:
+          body:
+            application/json:
+              type: object
+              example:
+                objectsetid: osid99999
+
