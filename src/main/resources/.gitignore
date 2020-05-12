@@ -1,6 +1,6 @@
 
 # ---------------- #
-# Vincent-specific #
+# local properties #
 # ---------------- #
 
-vin-config.yaml
+local-config.yaml

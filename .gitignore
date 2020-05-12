@@ -47,9 +47,3 @@ target/
 .DS_Store
 velocity.log
 
-# ---------------- #
-# Vincent-specific #
-# ---------------- #
-
-local-config.yaml
-
