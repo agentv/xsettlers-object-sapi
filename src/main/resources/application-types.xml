@@ -5,5 +5,28 @@
       <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
 type: string]]></types:shape>
     </types:type>
+    <types:type name="object_json" format="json">
+      <types:shape format="weave" example="examples/object.json"><![CDATA[%dw 2.0
+
+type object_json = {|
+  objecttypename: String, 
+  objectproperties: {|
+    line: String, 
+    year: String
+  |}, 
+  objectdata: String
+|} {"example": "{\\\"objecttypename\\\":\\\"ship\\\",\\\"objectproperties\\\":{\\\"line\\\":\\\"Nimitz\\\",\\\"year\\\":\\\"1999\\\"},\\\"objectdata\\\":\\\"dataencodedinline\\\"}"}
+
+]]></types:shape>
+    </types:type>
   </types:catalog>
+  <types:enrichment select="#e30c18d7-41be-4298-bf41-d86c2248adaa">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="object_json"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
 </types:mule>
