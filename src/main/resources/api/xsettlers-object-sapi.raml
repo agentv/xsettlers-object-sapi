@@ -1,7 +1,10 @@
 #%RAML 1.0
 title: XSettlers Object SAPI
 version: 0.5.0
-description: This API implements the lowest level functions of the game engine.
+description: This API implements the lowest level functions of the game engine
+
+types:
+  gameobject: !include definitions/object.raml
 
 /object:
   displayName: Game Object
@@ -21,11 +24,8 @@ description: This API implements the lowest level functions of the game engine.
     description: add new object to store
     body:
       application/json:
-        description: TODO - establish a data type for this, and example
-        example:
-          - objecttypename : object_type_name
-          - objectattributes : object_attributes
-          - objectdata : object_data
+        type: gameobject
+        examples: !include examples/object.raml
 
   /{ID}:
     displayName: Object by ID
@@ -60,9 +60,9 @@ description: This API implements the lowest level functions of the game engine.
 
   /cohort:
     displayName: Set of Objects
-    description: a set of objects - defined by a _selectionspec_
+    description: a set of objects - defined by a _selectionspec_ # No one is certain about what that means. Eventually, we'll find a good place to define it and build the support for it
     get:
-      description: retrieve objects from the store according to a key specification
+      description: retrieve objects from the store according to a _selectionspec_
       queryParameters:
         selectionspec:
           description: an object that defines the selection characteristics of the set # current thoughts: type, date-range, owner, from-list, owned-by-object
@@ -110,4 +110,3 @@ description: This API implements the lowest level functions of the game engine.
               type: object
               example:
                 objectsetid: osid99999
-
