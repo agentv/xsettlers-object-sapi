@@ -1,4 +1,5 @@
 #%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/0e8cd36e-9e73-460b-9bb6-d6902b0f6448/ # 
 title: XSettlers Object SAPI
 version: 0.5.0
 description: This API implements the lowest level functions of the game engine
@@ -8,48 +9,49 @@ types:
 
 /object:
   displayName: Game Object
-  description: general class for game objects
-  get:
-    displayName: Get Object
-    description: retrieve object(s) from store
-    responses:
-      200:
-        body:
-          application/json:
-            example:
-              - key1 : value1
-              - key2 : value2
+  description: General class for game objects
   post:
     displayName: Create New Object
-    description: add new object to store
+    description: Add new object to the Object store, return the key assigned to the object
     body:
       application/json:
         type: gameobject
         examples: !include examples/object.raml
+    responses:
+      201:
+        body:
+          application/json:
+            type: string
+            example: 
+              ship-200514-8576
 
   /{ID}:
     displayName: Object by ID
-    description: a game object identified by key
+    description: A game object identified by key
     get:
-      description: retrieve identified object from store
+      description: Retrieve identified object from store
       displayName: Retrieve Object by ID
       responses:
         200:
           body:
             application/json:
-              example:
-                key : value
+              type: gameobject
+              examples: !include examples/object.raml
     put:
-      description: overwrite (or create) identified object in store
+      description: Overwrite (or create) identified object in store
       displayName: Overwrite Object by ID
+      body:
+        application/json:
+          type: gameobject
+          examples: !include examples/object.raml
       responses:
         200:
           body:
             application/json:
-              example:
-                key: value
+              type: gameobject
+              examples: !include /examples/object.raml
     delete:
-        description: remove identified object from store
+        description: Remove identified object from store
         displayName: Remove Object by ID
         responses:
           200:
@@ -60,23 +62,29 @@ types:
 
   /cohort:
     displayName: Set of Objects
-    description: a set of objects - defined by a _selectionspec_ # No one is certain about what that means. Eventually, we'll find a good place to define it and build the support for it
+    description: A set of objects - defined by a _selectionspec_ # No one is certain about what that means. Eventually, we'll find a good place to define it and build the support for it
     get:
       description: retrieve objects from the store according to a _selectionspec_
       queryParameters:
         selectionspec:
-          description: an object that defines the selection characteristics of the set # current thoughts: type, date-range, owner, from-list, owned-by-object
+          description: an object that defines the selection characteristics of the set # current thoughts - type, date-range, owner, from-list, owned-by-object
           required: true
+      responses:
+        200:
+          body:
+            application/json:
+              type: gameobject[]
+              examples: !include examples/objects.raml
 
 /key:
   displayName: Object Key
-  description: a properly formed key associated with an object
+  description: A properly formed key associated with an object
   get:
     displayName: Make New Key
-    description: generate a new key
+    description: Generate a new key
     queryParameters:
       key-type:
-        description: one valid member of the consumer's assigned _objectset_
+        description: One valid member of the consumer's assigned _objectset_
         required: true
         type: string
     responses:
@@ -87,22 +95,22 @@ types:
               validKey : newKey
   /objectset:
     displayName: objectset
-    description: a collection of text strings that describe the object types to be stored and retrieved
+    description: A collection of text strings that describe the object types to be stored and retrieved. The PAPI can register an _objectset_ and then require that calls to create a new object will use one of the names defined therein
     get:
       displayName: Get Current objectset
-      description: retrieve the _objectset_ currently registered, or error if none is registered
-    post:
-      displayName: Register an objectset
-      description: register the use of an _objectset_ associated with a given consumer - return an "object set ID" (_osid_)
+      description: Retrieve the _objectset_ currently registered, or error if none is registered
       body:
         application/json:
           type: string[]
-          example:
-            - sector
-            - ship
-            - colony
-            - player
-            - pod 
+          examples:
+            output: !include examples/objectset.raml
+    post:
+      displayName: Register an objectset
+      description: Register the use of an _objectset_ associated with a given consumer - return an "object set ID" (_osid_)
+      body:
+        application/json:
+          type: string[]
+          example: !include examples/objectset.raml
       responses:
         201:
           body:
