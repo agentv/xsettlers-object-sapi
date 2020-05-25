@@ -137,57 +137,6 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="put:\object\(ID):xsettlers-object-sapi-config">
-        <ee:transform>
-            <ee:variables>
-                <ee:set-variable variableName="ID">attributes.uriParams.'ID'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  key: "value"
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-    </flow>
-    <flow name="delete:\object\(ID):xsettlers-object-sapi-config">
-        <ee:transform>
-            <ee:variables>
-                <ee:set-variable variableName="ID">attributes.uriParams.'ID'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  deleted_object_key: "deleted_object_disposition"
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-    </flow>
-    <flow name="get:\object:xsettlers-object-sapi-config">
-        <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    key1: "value1"
-  }, 
-  {
-    key2: "value2"
-  }
-]]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-    </flow>
     <flow name="get:\key:xsettlers-object-sapi-config">
         <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
             <ee:message>
@@ -199,47 +148,5 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-    </flow>
-    <flow name="get:\object\(ID):xsettlers-object-sapi-config">
-        <ee:transform>
-            <ee:variables>
-                <ee:set-variable variableName="ID">attributes.uriParams.'ID'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-		<flow-ref doc:name="getObjectByID" doc:id="c6b511c2-e20f-4ee6-96d0-bebfc02b2f99" name="getObjectByID" />
-    </flow>
-    <flow name="get:\object\cohort:xsettlers-object-sapi-config">
-        <logger level="INFO" message="get:\object\cohort:xsettlers-object-sapi-config" />
-    </flow>
-    <flow name="get:\key\objectset:xsettlers-object-sapi-config">
-        <logger level="INFO" message="get:\key\objectset:xsettlers-object-sapi-config" />
-    </flow>
-    <flow name="post:\key\objectset:application\json:xsettlers-object-sapi-config">
-        <set-variable value="201" doc:name="httpStatus" doc:id="9f962234-9d68-4714-a797-2fc09bd88f04" variableName="httpStatus" />
-        <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  objectsetid: "osid99999"
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-    </flow>
-    <flow name="post:\object:application\json:xsettlers-object-sapi-config">
-        <set-variable value="201" doc:name="httpStatus" doc:id="88e07fb9-6148-4e50-9b65-897f68888a48" variableName="httpStatus" />
-        <flow-ref doc:name="postObject" doc:id="45b4961c-660f-4133-b9fc-4cbfc167a2f0" name="postObject" />
-    </flow>
-    <flow name="put:\object\(ID):application\json:xsettlers-object-sapi-config">
-        <ee:transform>
-            <ee:variables>
-                <ee:set-variable variableName="ID">attributes.uriParams.'ID'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-		<flow-ref doc:name="putObject" doc:id="e53711b5-336c-487c-9275-a9466a86ab07" name="putObject" />
-    </flow>
-    <flow name="get:\key\objectset:application\json:xsettlers-object-sapi-config">
-        <logger level="INFO" message="get:\key\objectset:application\json:xsettlers-object-sapi-config" />
     </flow>
 </mule>
