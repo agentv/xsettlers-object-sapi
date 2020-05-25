@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	
+    <flow name="post:\object:application\json:xsettlers-object-sapi-config">
+        <set-variable value="201" doc:name="httpStatus" doc:id="552e1da7-fff4-427a-a69a-c359d8debdf7" variableName="httpStatus" />
+        <flow-ref doc:name="postObject" doc:id="a41d7edd-d01f-45bc-94b3-dde1bc57ee05" name="postObject" />
+    </flow>
+	<flow name="get:\object\(ID):xsettlers-object-sapi-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="ID">attributes.uriParams.'ID'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+		<flow-ref doc:name="getObjectByID" doc:id="a6ff83f8-1208-42d8-8d85-43bdc8ae0b04" name="getObjectByID" />
+    </flow>
+    <flow name="put:\object\(ID):application\json:xsettlers-object-sapi-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="ID">attributes.uriParams.'ID'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+		<flow-ref doc:name="putObject" doc:id="0d814e73-45cc-4c33-ba42-83c618850da3" name="putObjectByID" />
+    </flow>
+	<flow name="delete:\object\(ID):xsettlers-object-sapi-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="ID">attributes.uriParams.'ID'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+		<flow-ref doc:name="deleteObjectByID" doc:id="1f173091-2ac3-4776-ad0a-c6ce6942dd33" name="deleteObjectByID" />
+    </flow>
+	
+	
+</mule>

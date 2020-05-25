@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	
+	<flow name="testPost" doc:id="f97eef1e-f736-461b-809a-7ad9346b0c0c" >
+		<http:listener doc:name="GET /posttest" doc:id="6202f6fd-4243-4788-aa1a-bda3b69172e8" config-ref="HTTP_Listener_config" path="/posttest" allowedMethods="GET" doc:description="This flow simply creates a record and submits it as an object to the POST implementation"/>
+		<set-payload value='#[{
+	"objecttypename" : "ship",
+	"objectproperties" :
+		{ "line" : "Nimitz", "year" : "1999" },
+	"objectdata" : "dataencodedinline"
+}]' doc:name="Set Payload" doc:id="faa8ff93-f1fc-4a57-a788-68a2916c5348" />
+		<flow-ref doc:name="postObject" doc:id="a3628d33-0fb7-4b56-9a5a-7efcdf1cb6f7" name="postObject"/>
+		<logger level="INFO" doc:name="Logger" doc:id="f6c875e6-3e3e-4073-b840-5f058da73386" message='#[payload]'/>
+	</flow>
+	<flow name="reportKeys" doc:id="7d19ce45-c5be-4920-a0ab-ae0e9a272771" >
+		<http:listener doc:name="Get /okeys" doc:id="62d4b0bc-adea-4f00-8dd3-994b675095a1" config-ref="HTTP_Listener_config" path="/okeys" allowedMethods="GET"/>
+		<os:retrieve-all-keys doc:name="Retrieve all keys" doc:id="e1da99fe-c95d-4814-b1b3-81d66ba1fab4" />
+		<logger level="INFO" doc:name="Logger" doc:id="295702c6-1901-4ddc-954a-bdb292ceeb31" message="#[payload]"/>
+	</flow>
+	<flow name="getFullDictionary" doc:id="7d654ac6-0912-4d44-b5e6-34dd38338bff" >
+		<http:listener doc:name="GET /dict" doc:id="e9b86928-7e2f-4f08-9eee-7688826d2ed9" config-ref="HTTP_Listener_config" path="/dict" allowedMethods="GET"/>
+		<os:retrieve-all doc:name="Retrieve all" doc:id="5165407b-f0e8-4ea2-a3ea-24a9fdb4754b" />
+		<ee:transform doc:name="Transform Message" doc:id="6cadf6da-a041-415f-ab4d-bd68751a39c9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="keyStatus" doc:id="7cd8891b-5f9c-408f-94a6-8f792dc54f24" >
+		<validation:matches-regex doc:id="65ba7963-b396-4cb2-9be0-42e6c7885517" value="#[payload]" regex="#[/^[A-Za-z0-9:\-\.]*$/]" message="bad input!" doc:name="Safe Key Content" doc:description="I'm not sure we're keeping this"/>
+	</flow>
+	
+	
+</mule>
