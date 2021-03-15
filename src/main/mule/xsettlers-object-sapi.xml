@@ -2,7 +2,7 @@
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
     <apikit:config name="xsettlers-object-sapi-config" api="xsettlers-object-sapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="xsettlers-object-sapi-main">
-        <http:listener path="/api/*" config-ref="HTTP_Listener_config">
+        <http:listener path="/api/*" config-ref="HTTP_Listener_config" doc:description="This is the main entry point for the API. The config file should either be folded into the interface.xml, or that one should be factored back in here.">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:response>
@@ -149,4 +149,76 @@ output application/json
             </ee:message>
         </ee:transform>
     </flow>
+   
+    <flow name="get:\object:xsettlers-object-sapi-config">
+		<flow-ref doc:name="getObjects" doc:id="db98b6cc-5b10-42ef-9b7e-3f4566aa2319" name="getObjects"/>
+    </flow>
+	
+    <flow name="post:\object:application\json:xsettlers-object-sapi-config">
+        <set-variable value="201" doc:name="httpStatus" doc:id="21fd2438-c355-4207-9557-c5ff6d20139f" variableName="httpStatus" />
+        <flow-ref doc:name="postObject" doc:id="069b944b-68eb-440e-820f-71e09e2df126" name="postObject" />
+    </flow>
+	<flow name="get:\object\(ID):xsettlers-object-sapi-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="ID">attributes.uriParams.'ID'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+		<flow-ref doc:name="getObjectByID" doc:id="77e0f85f-a0f7-4813-bbf6-f5c857dedb47" name="getObjectByID" />
+    </flow>
+    <flow name="put:\object\(ID):application\json:xsettlers-object-sapi-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="ID">attributes.uriParams.'ID'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+		<flow-ref doc:name="putObject" doc:id="44860d5d-4913-4803-bbde-2db4323f26f9" name="putObjectByID" />
+    </flow>
+	<flow name="delete:\object\(ID):xsettlers-object-sapi-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="ID">attributes.uriParams.'ID'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+		<flow-ref doc:name="deleteObjectByID" doc:id="f7cbb8a2-4e07-4458-9cae-db508c90dad6" name="deleteObjectByID" />
+    </flow>
+    
 </mule>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
