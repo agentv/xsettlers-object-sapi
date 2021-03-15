@@ -56,9 +56,11 @@ payload]]></ee:set-payload>
 					doc:id="47a90872-5032-4a02-887a-ec91cc0fd585">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
-output application/java
+output application/json
 ---
 {
+	newkey: vars.candidateKey,
+	storedrecord: payload
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
