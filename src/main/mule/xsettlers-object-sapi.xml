@@ -137,7 +137,7 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="get:\key:xsettlers-object-sapi-config">
+    <flow name="get:\key:xsettlers-object-sapi-config" doc:description="I have no idea why this is here. check the RAML to see what caused this">
         <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
